@@ -15,20 +15,37 @@
 */
 package com.himanshu.poc.xmldiff;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.custommonkey.xmlunit.Difference;
 import org.custommonkey.xmlunit.DifferenceConstants;
 import org.custommonkey.xmlunit.DifferenceListener;
+import org.custommonkey.xmlunit.NodeDetail;
 import org.w3c.dom.Node;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.NodeType;
+
 public class IgnoringDifferenceListener implements DifferenceListener {
+  
+  private Set<Integer> ignoredDifferences = new HashSet<>();
+  
+  {
+    ignoredDifferences.add(DifferenceConstants.CHILD_NODELIST_LENGTH_ID);
+    ignoredDifferences.add(DifferenceConstants.CHILD_NODELIST_SEQUENCE_ID);
+  }
 
   @Override
   public int differenceFound(Difference arg0) {
-    System.out.println(arg0);
-    if (arg0.getId() == DifferenceConstants.CHILD_NODELIST_LENGTH.getId()) {
-      System.out.println("IGNORING \n\n");
-      System.out.println(arg0.toString());
-      System.out.println("\n\n");
+    //System.out.println(arg0);
+    NodeDetail controlNode = arg0.getControlNodeDetail();
+    NodeDetail testNode = arg0.getTestNodeDetail();
+    
+    if (ignoredDifferences.contains(arg0.getId()) || 
+        ((controlNode != null && controlNode.getNode() != null && controlNode.getNode().getNodeType() == Node.TEXT_NODE) 
+            || (testNode != null && testNode.getNode() != null && testNode.getNode().getNodeType() == Node.TEXT_NODE)) ) {
+      //System.out.println("IGNORING");
+      //System.out.println(arg0.toString());
       return RETURN_IGNORE_DIFFERENCE_NODES_IDENTICAL;
     } else {
       return RETURN_ACCEPT_DIFFERENCE;
