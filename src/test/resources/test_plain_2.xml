@@ -1,4 +1,7 @@
 <person>
-	<name>himanshu</name>
-	<gender>M</gender>
+	<name>generic</name>
+	<gender>F</gender>
+	<info>
+		<greeting>world</greeting>
+	</info>
 </person>

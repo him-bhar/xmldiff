@@ -1,3 +1,7 @@
 <person>
 	<name>himanshu</name>
+	<gender>M</gender>
+	<info>
+		<greeting>hello</greeting>
+	</info>
 </person>

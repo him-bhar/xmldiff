@@ -20,6 +20,7 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
 
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -27,12 +28,12 @@ import org.xml.sax.SAXException;
 public class CompareXMLsTest {
   
   @Test
-  public void testCompare() {
+  public void testCompare() throws XPathExpressionException {
     String xml1FilePath = CompareXMLsTest.class.getResource("/").getFile().concat("test_plain_1.xml");
     String xml2FilePath = CompareXMLsTest.class.getResource("/").getFile().concat("test_plain_2.xml");
     
-    XMLDoc doc1 = new XMLDoc(xml1FilePath, null);
-    XMLDoc doc2 = new XMLDoc(xml2FilePath, null);
+    XMLDoc doc1 = new XMLDoc(xml1FilePath, null, null);
+    XMLDoc doc2 = new XMLDoc(xml2FilePath, null, null);
     try {
       doc1.buildDocument();
       doc2.buildDocument();

@@ -16,28 +16,37 @@
 package com.himanshu.poc.xmldiff;
 
 import java.io.IOException;
+import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class XMLDoc {
   private final String filePath;
   private Document dom;
+  private final String xmlString;
   
-  public XMLDoc(String filePath, Document dom) {
+  public XMLDoc(String filePath, Document dom, String xmlString) {
     this.filePath = filePath;
     this.dom = dom;
+    this.xmlString = xmlString;
   }
   
   public void buildDocument() throws ParserConfigurationException, SAXException, IOException {
-    if (dom == null) {
+    if (dom == null && xmlString == null) {
       DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
       DocumentBuilder db = dbf.newDocumentBuilder();
       dom = db.parse(filePath);
+      dom.normalize();
+    } else if (dom == null && xmlString != null) {
+      DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+      DocumentBuilder db = dbf.newDocumentBuilder();
+      dom = db.parse(new InputSource(new StringReader(xmlString)));
       dom.normalize();
     }
   }

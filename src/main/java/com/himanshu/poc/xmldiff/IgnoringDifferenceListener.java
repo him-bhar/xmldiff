@@ -29,23 +29,25 @@ import com.sun.org.apache.xalan.internal.xsltc.compiler.util.NodeType;
 public class IgnoringDifferenceListener implements DifferenceListener {
   
   private Set<Integer> ignoredDifferences = new HashSet<>();
+  private Set<String> ignoredXPaths = new HashSet<>();
   
   {
     ignoredDifferences.add(DifferenceConstants.CHILD_NODELIST_LENGTH_ID);
     ignoredDifferences.add(DifferenceConstants.CHILD_NODELIST_SEQUENCE_ID);
+    //ignoredXPaths.add("");
   }
 
   @Override
   public int differenceFound(Difference arg0) {
-    //System.out.println(arg0);
+    System.out.println(arg0);
     NodeDetail controlNode = arg0.getControlNodeDetail();
     NodeDetail testNode = arg0.getTestNodeDetail();
     
-    if (ignoredDifferences.contains(arg0.getId()) || 
+    if (ignoredDifferences.contains(arg0.getId()) /*|| 
         ((controlNode != null && controlNode.getNode() != null && controlNode.getNode().getNodeType() == Node.TEXT_NODE) 
-            || (testNode != null && testNode.getNode() != null && testNode.getNode().getNodeType() == Node.TEXT_NODE)) ) {
-      //System.out.println("IGNORING");
-      //System.out.println(arg0.toString());
+            || (testNode != null && testNode.getNode() != null && testNode.getNode().getNodeType() == Node.TEXT_NODE)) */) {
+      System.out.println("IGNORING");
+      System.out.println(arg0.toString());
       return RETURN_IGNORE_DIFFERENCE_NODES_IDENTICAL;
     } else {
       return RETURN_ACCEPT_DIFFERENCE;
